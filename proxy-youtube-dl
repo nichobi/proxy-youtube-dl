@@ -1,0 +1,13 @@
+#!/bin/sh
+exec scala "$0" "$@"
+!#
+import scala.sys.process._
+val proxies = Seq("wget", "-O", "-", "https://www.proxy-list.download/api/v1/get?type=http&country=" + args(0)).!!.split("\n")
+for (proxy <- proxies) {
+  val command = Seq("youtube-dl", 
+  args(1),
+  "--proxy", proxy)
+  println(command.mkString(" "))
+  val result = (command.!)
+  if(result == 0) System.exit(result)
+}
